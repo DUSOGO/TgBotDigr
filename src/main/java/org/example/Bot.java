@@ -30,7 +30,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        chatId = update.getMessage().getChatId();
+        //chatId = update.getMessage().getChatId();
         String msg = update.getMessage().getText();
         messageProcessing(msg);
         //System.out.println(msg);
@@ -52,7 +52,7 @@ public class Bot extends TelegramLongPollingBot {
 
     protected void vazCounter() {
         Thread thread = new Thread(() -> {//System.out.println("Поток " + Thread.currentThread().getName() + " запущен с помощью лямбда.");
-            LocalTime timeStart = LocalTime.of(21, 1, 1); //time to start code
+            LocalTime timeStart = LocalTime.of(21, 5, 1); //time to start code
 
             while (true) { // 24/7, this code always works
                 LocalTime timeNow = LocalTime.now(); //now
@@ -62,6 +62,9 @@ public class Bot extends TelegramLongPollingBot {
                 if (a == 0) { // if now
                     for (int i = 0; i < 31; i++) {
                         send(timeNow.format(DateTimeFormatter.ofPattern("HHmm")));
+                        if (i == 8){
+                            send("21099");
+                        }
                         //System.out.println(timeNow);
                         try {
                             Thread.sleep(60000);  // sleep minute
@@ -81,7 +84,7 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 try {   // if not now
-                    send(b + "ёх секундная изготовка ");
+                    send(b / 60 + "ёх/ух/и минутная изготовка ");
                         Thread.sleep(b * 1000);
                 } catch (Exception e) {
                     send("Это время прошло кажется");
