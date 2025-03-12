@@ -41,7 +41,9 @@ public class Bot extends TelegramLongPollingBot {
             send("Наипрекраснейших сновидений, друзья!");
         } else if (msg.toLowerCase().contains("ай дигр")) {
             send("ну я \uD83E\uDD70");
-        } else if(msg.toLowerCase().contains("вольно")) {
+        } else if (msg.toLowerCase().contains("проверка")){
+            send("Данил Г. из ИСП6 сделал этого бота");
+        }else if(msg.toLowerCase().contains("вольно")) {
             send("есть! \uD83E\uDEE1");
         } else if (msg.toLowerCase().contains("хаха")){
             send("xaxaxax");
