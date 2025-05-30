@@ -1,22 +1,22 @@
 package org.example;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDice;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import static org.glassfish.grizzly.ProcessorExecutor.execute;
 
 public class Bot extends TelegramLongPollingBot {
     private final String botUsername = "@DiSenderBot";
     private static Long chatId = -1001990150218L;
+    private static String token = "7909644454:AAE7jjbc5e9CtUM8RGXkg8m9H0ks80WeCgM";
 
     @Override
     public String getBotUsername() {
@@ -25,7 +25,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "";
+        return token;
     }
 
     @Override
@@ -36,19 +36,21 @@ public class Bot extends TelegramLongPollingBot {
         //System.out.println(msg);
     }
 
-    private void messageProcessing(String msg){
+    private void messageProcessing(String msg) {
         if (msg.toLowerCase().contains("спаконче")) {
             send("Наипрекраснейших сновидений, друзья!");
         } else if (msg.toLowerCase().contains("ай дигр")) {
             send("ну я \uD83E\uDD70");
-        } else if (msg.toLowerCase().contains("проверка")){
+        } else if (msg.toLowerCase().contains("проверка")) {
             send("Данил Г. из ИСП6 сделал этого бота");
-        }else if(msg.toLowerCase().contains("вольно")) {
+        } else if (msg.toLowerCase().contains("вольно")) {
             send("есть! \uD83E\uDEE1");
-        } else if (msg.toLowerCase().contains("хаха")){
+        } else if (msg.toLowerCase().contains("хаха")) {
             send("xaxaxax");
-        } else if (msg.toLowerCase().contains("дигр") && msg.toLowerCase().contains("?")){
+        } else if (msg.toLowerCase().contains("дигр") && msg.toLowerCase().contains("?")) {
             send(yesOrNo());
+        }else if (msg.toLowerCase().contains("дигр") && msg.toLowerCase().contains("казик")) {
+            gamble();
         }
     }
 
@@ -62,9 +64,10 @@ public class Bot extends TelegramLongPollingBot {
                 int b = (int) a; // same as A, but int type (to multiply it later)
 
                 if (a == 0) { // if now
-                    for (int i = 0; i < 31; i++) {
-                        send(timeNow.format(DateTimeFormatter.ofPattern("HHmm")));
-                        if (i == 8){
+                    for (int i = 0; i < 39; i++) {
+                        String hhmm = timeNow.format(DateTimeFormatter.ofPattern("HHmm"));
+                        send(hhmm);
+                        if (hhmm.equals("2109")) {
                             send("21099");
                         }
                         //System.out.println(timeNow);
@@ -86,8 +89,9 @@ public class Bot extends TelegramLongPollingBot {
                 }
 
                 try {   // if not now
-                    send(b / 60 + "ёх/ух/и минутная изготовка ");
-                        Thread.sleep(b * 1000);
+                    send((b / 60) + 1 + "ёх/ух/и/a минутная изготовка ");
+                    send("бананови залёт в чат наху");
+                    Thread.sleep(b * 1000);
                 } catch (Exception e) {
                     send("Это время прошло кажется");
                     try {
@@ -127,20 +131,24 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    protected void scheduleMessage() {
-        /*//LocalTime targetTime = LocalTime.of(21, 7);
-        LocalTime targetTime = LocalTime.of(21, 16);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime targetDateTime = now.with(targetTime);
+    public void gamble() {
+        SendDice dice = new SendDice(String.valueOf(chatId));
 
-        // Если текущее время уже после 21:07, запланируем на следующий день
-        if (now.isAfter(targetDateTime)) {
-            targetDateTime = targetDateTime.plusDays(1);
+        sendAnimoji(dice);
+
+        dice.setEmoji("\uD83C\uDFB0");
+        sendAnimoji(dice);
+
+        dice.setEmoji("\uD83C\uDFAF");
+        sendAnimoji(dice);
+    }
+
+    public void sendAnimoji(SendDice emoji) {
+        try {
+            execute(emoji);                    //Actually sending the message
+        } catch (TelegramApiException e) {
+            System.out.println("in method send give you error");
+            throw new RuntimeException(e);      //Any error will be printed here
         }
-
-        long initialDelay = java.time.Duration.between(now, targetDateTime).toMillis();
-
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.schedule(() -> sendMessageToChat(chatId,"эээ сам ты гнида, папаша недоделанный, сам меня написал криво, сам жалуется"), initialDelay, TimeUnit.MILLISECONDS);*/
     }
 }
