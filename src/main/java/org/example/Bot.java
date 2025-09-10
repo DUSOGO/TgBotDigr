@@ -15,8 +15,8 @@ import static org.glassfish.grizzly.ProcessorExecutor.execute;
 
 public class Bot extends TelegramLongPollingBot {
     private final String botUsername = "@DiSenderBot";
-    private static Long chatId = -1001990150218L;
-    private static String token = "7909644454:AAE7jjbc5e9CtUM8RGXkg8m9H0ks80WeCgM";
+    private static Long chatId = ;
+    private static String token = "";
 
     @Override
     public String getBotUsername() {
